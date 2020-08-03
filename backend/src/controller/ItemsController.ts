@@ -3,7 +3,9 @@ import { Request, Response} from 'express';
 
 class ItemsController{
     async index(request: Request, response: Response) {
-        const items = await knex('items').select('*');
+        const items = await knex('items').select('*').where(function() {
+            this.where('id', '<', 7)
+          });
     
         const serializedItems = items.map(item => {
             return { 
@@ -15,6 +17,7 @@ class ItemsController{
     
         return response.json(serializedItems);
     }
+
 }
 
 export default ItemsController;
